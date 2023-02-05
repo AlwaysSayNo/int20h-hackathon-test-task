@@ -1,3 +1,9 @@
+server:
+  port: 8080
+
+security:
+  key: ${JWT_SECRET_KEY}
+
 spring:
   jpa:
     show-sql: false
