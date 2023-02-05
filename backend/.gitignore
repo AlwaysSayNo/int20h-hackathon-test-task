@@ -1,9 +1,11 @@
-HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 **/.other/
+**/DOCKER.md
+**/postgres-env
+**/.gitignore
 
 ### STS ###
 .apt_generated
