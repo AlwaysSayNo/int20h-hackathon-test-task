@@ -1,6 +1,5 @@
 package com.hackathon.backend.dto;
 
-import com.hackathon.backend.enumeration.ProductCategory;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -11,9 +10,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class ProductDto {
+public class ProductToDishDto {
     private Long id;
-    private String name;
-    private ProductCategory category;
-    private String imageUrl;
+    private DishDto dish;
+    private ProductDto product;
+    private String measure;
 }

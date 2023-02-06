@@ -1,0 +1,60 @@
+amaranth
+barley
+hulled barley
+barley groats
+pot
+scotch barley
+pearl
+barley flakes
+barley grits
+buckwheat
+buckwheat groats
+unroasted buckwheat
+kasha
+roasted buckwheat
+buckwheat grits
+corn
+hominy
+popcorn
+millet
+oats
+oat groats
+rolled oats
+old fashioned oatmeal
+steel cut oats
+irish oatmeal
+quick cooking oats
+quick oatmeal
+instant oats
+instant oatmeal
+oat bran
+quinoa
+rice
+rye
+rye berries
+cracked rye
+rye flakes
+sorghum
+spelt
+spelt berries
+spelt flakes
+teff
+triticale
+triticale berries
+triticale flakes
+wheat
+wheat berries
+bulgur wheat
+cracked wheat
+farina
+semolina
+pasta
+couscous
+wheat bran
+wheat flakes
+seitan
+wheat gluten
+farro
+kamut
+durum wheat
+wild rice

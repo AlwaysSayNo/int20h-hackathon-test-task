@@ -1,6 +1,6 @@
 package com.hackathon.backend.model;
 
-import com.hackathon.backend.model.enumeration.Category;
+import com.hackathon.backend.enumeration.ProductCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +30,7 @@ public class Product {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Category category;
+    private ProductCategory category;
 
     @Column(nullable = false)
     private String imageUrl;

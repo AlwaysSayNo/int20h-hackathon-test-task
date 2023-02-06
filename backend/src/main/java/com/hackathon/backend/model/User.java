@@ -36,17 +36,17 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "product_id"})
     )
-    private Set<Product> products = new LinkedHashSet<>();
+    private Set<Product> productUserHas = new LinkedHashSet<>();
 
     @ManyToMany(
             fetch = FetchType.LAZY,
-            cascade = CascadeType.MERGE
+            cascade = CascadeType.ALL
     )
     @JoinTable(name = "custom_dishes",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "dish_id"})
     )
-    private Set<Dish> dishes = new LinkedHashSet<>();
+    private Set<Dish> customDishes = new LinkedHashSet<>();
 
 }
