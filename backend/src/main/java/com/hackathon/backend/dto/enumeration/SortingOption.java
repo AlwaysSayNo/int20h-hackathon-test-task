@@ -1,4 +1,4 @@
-package com.hackathon.backend.model.enumeration;
+package com.hackathon.backend.dto.enumeration;
 
 public enum SortingOption {
     ASCENDING, DESCENDING

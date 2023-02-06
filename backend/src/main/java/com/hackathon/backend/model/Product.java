@@ -1,5 +1,6 @@
 package com.hackathon.backend.model;
 
+import com.hackathon.backend.dto.ProductDto;
 import com.hackathon.backend.model.enumeration.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -46,5 +47,12 @@ public class Product {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public static Product fromProductDto(ProductDto productDto) {
+        return new Product()
+                .setName(productDto.getName())
+                .setCategory(productDto.getCategory())
+                .setImageUrl(productDto.getImageUrl());
     }
 }

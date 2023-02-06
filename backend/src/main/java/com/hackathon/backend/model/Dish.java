@@ -1,5 +1,6 @@
 package com.hackathon.backend.model;
 
+import com.hackathon.backend.dto.DishDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,5 +47,14 @@ public class Dish {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public static Dish fromDishDto(DishDto dishDto) {
+        return new Dish()
+                .setName(dishDto.getName())
+                .setRecipe(dishDto.getRecipe())
+                .setDifficulty(dishDto.getDifficulty())
+                .setVotesAmount(dishDto.getVotesAmount())
+                .setImageUrl(dishDto.getImageUrl());
     }
 }

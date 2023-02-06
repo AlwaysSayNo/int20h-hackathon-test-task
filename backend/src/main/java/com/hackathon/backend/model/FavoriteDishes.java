@@ -1,5 +1,6 @@
 package com.hackathon.backend.model;
 
+import com.hackathon.backend.dto.FavoriteDishesDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,6 +47,12 @@ public class FavoriteDishes {
             inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"favorite_dishes_id", "dish_id"})
     )
-    private Set<Dish> products = new LinkedHashSet<>();
+    private Set<Dish> dishes = new LinkedHashSet<>();
 
+    public static FavoriteDishes fromFavoriteDishesDto(FavoriteDishesDto favoriteDishesDto) {
+        return new FavoriteDishes()
+                .setName(favoriteDishesDto.getName())
+                .setUser(favoriteDishesDto.getUser())
+                .setDishes(favoriteDishesDto.getDishes());
+    }
 }

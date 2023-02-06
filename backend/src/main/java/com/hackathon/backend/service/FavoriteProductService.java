@@ -1,5 +1,6 @@
 package com.hackathon.backend.service;
 
+import com.hackathon.backend.dto.FavoriteProductsDto;
 import com.hackathon.backend.model.FavoriteProducts;
 import com.hackathon.backend.repository.FavoriteProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class FavoriteProductService {
         this.favoriteProductRepository = favoriteProductRepository;
     }
 
-    public FavoriteProducts insertFavoriteProducts(FavoriteProducts favoriteProducts) {
-        return favoriteProductRepository.save(favoriteProducts);
+    public FavoriteProducts insertFavoriteProducts(FavoriteProductsDto favoriteProductsDto) {
+        return favoriteProductRepository.save(FavoriteProducts.fromFavoriteProductsDto(favoriteProductsDto));
     }
 }

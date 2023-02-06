@@ -1,5 +1,6 @@
 package com.hackathon.backend.model;
 
+import com.hackathon.backend.dto.FavoriteProductsDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,4 +49,10 @@ public class FavoriteProducts {
     )
     private Set<Product> products = new LinkedHashSet<>();
 
+    public static FavoriteProducts fromFavoriteProductsDto(FavoriteProductsDto favoriteProductsDto) {
+        return new FavoriteProducts()
+                .setName(favoriteProductsDto.getName())
+                .setUser(favoriteProductsDto.getUser())
+                .setProducts(favoriteProductsDto.getProducts());
+    }
 }
