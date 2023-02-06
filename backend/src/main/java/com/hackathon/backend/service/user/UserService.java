@@ -1,4 +1,4 @@
-package com.hackathon.backend.service;
+package com.hackathon.backend.service.user;
 
 import com.hackathon.backend.dto.security.RegistrationDto;
 import com.hackathon.backend.dto.user.UserDto;
@@ -21,6 +21,11 @@ public class UserService {
 
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    public User getUser(String login) throws Exception {
+        return userRepository.findByLogin(login)
+                .orElseThrow(() -> new Exception(String.format("User with login %s doesn't exist", login)));
     }
 
     public boolean userExists(String login) {

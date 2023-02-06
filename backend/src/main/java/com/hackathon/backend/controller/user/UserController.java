@@ -1,7 +1,7 @@
 package com.hackathon.backend.controller.user;
 
 import com.hackathon.backend.dto.user.UserDto;
-import com.hackathon.backend.service.UserService;
+import com.hackathon.backend.service.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
