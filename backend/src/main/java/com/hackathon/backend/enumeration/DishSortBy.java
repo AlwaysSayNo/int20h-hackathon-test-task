@@ -1,4 +1,4 @@
-package com.hackathon.backend.dto.enumeration;
+package com.hackathon.backend.enumeration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

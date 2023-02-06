@@ -1,4 +1,4 @@
-package com.hackathon.backend.controller;
+package com.hackathon.backend.controller.mealapi;
 
 import com.hackathon.backend.dto.DishDto;
 import com.hackathon.backend.dto.ProductDto;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/hackathon/api/v1/meal")
 public class ApiController {
 
     private final ApiService apiService;
@@ -19,12 +19,12 @@ public class ApiController {
         this.apiService = apiService;
     }
 
-    @GetMapping("/get-products")
+    @GetMapping("/products")
     List<ProductDto> parseProductsWithPath() {
         return apiService.getAllProducts();
     }
 
-    @GetMapping("/get-dishes")
+    @GetMapping("/dishes")
     List<DishDto> getDishes() {
         return apiService.getAllDishes();
     }

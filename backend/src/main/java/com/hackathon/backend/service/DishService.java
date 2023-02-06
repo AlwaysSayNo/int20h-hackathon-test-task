@@ -1,12 +1,12 @@
 package com.hackathon.backend.service;
 
 import com.hackathon.backend.dto.DishDto;
+import com.hackathon.backend.dto.DishWithProductsDto;
 import com.hackathon.backend.dto.ProductDto;
 import com.hackathon.backend.dto.ProductWithMeasureDto;
-import com.hackathon.backend.dto.enumeration.DishSortBy;
-import com.hackathon.backend.dto.enumeration.SortingOption;
+import com.hackathon.backend.enumeration.DishSortBy;
+import com.hackathon.backend.enumeration.SortingOption;
 import com.hackathon.backend.model.Dish;
-import com.hackathon.backend.dto.DishWithProductsDto;
 import com.hackathon.backend.model.Product;
 import com.hackathon.backend.model.ProductToDish;
 import com.hackathon.backend.repository.DishRepository;
@@ -103,12 +103,11 @@ public class DishService {
     }
 
     public DishDto mapToDishDto(Dish dish) {
-        return DishDto.builder()
-                .name(dish.getName())
-                .recipe(dish.getRecipe())
-                .difficulty(dish.getDifficulty())
-                .votesAmount(dish.getVotesAmount())
-                .imageUrl(dish.getImageUrl())
-                .build();
+        return new DishDto()
+                .setName(dish.getName())
+                .setRecipe(dish.getRecipe())
+                .setDifficulty(dish.getDifficulty())
+                .setVotesAmount(dish.getVotesAmount())
+                .setImageUrl(dish.getImageUrl());
     }
 }

@@ -1,8 +1,8 @@
 package com.hackathon.backend.service;
 
 import com.hackathon.backend.dto.ProductDto;
+import com.hackathon.backend.enumeration.ProductCategory;
 import com.hackathon.backend.model.Product;
-import com.hackathon.backend.model.enumeration.Category;
 import com.hackathon.backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -31,25 +31,24 @@ public class ProductService {
         return productRepository.getUserProducts(userId);
     }
 
-    public Map<Category, List<Product>> getProductsByCategories() {
+    public Map<ProductCategory, List<Product>> getProductsByCategories() {
         return productRepository.getProducts().stream().collect(groupingBy(Product::getCategory));
     }
 
-    public List<Category> getProductCategories() {
+    public List<ProductCategory> getProductCategories() {
         return productRepository.getCategories();
     }
 
-    public List<Product> getProductsByCategory(Category category, int page) {
+    public List<Product> getProductsByCategory(ProductCategory category, int page) {
         // TODO: 05.02.2023 Move page size to constants or pass as argument
         Pageable pageable = PageRequest.of(page, 10);
         return productRepository.getProductsByCategory(category, pageable);
     }
 
     public ProductDto mapToProductDto(Product product) {
-        return ProductDto.builder()
-                .name(product.getName())
-                .category(product.getCategory())
-                .imageUrl(product.getImageUrl())
-                .build();
+        return new ProductDto()
+                .setName(product.getName())
+                .setCategory(product.getCategory())
+                .setImageUrl(product.getImageUrl());
     }
 }

@@ -1,7 +1,7 @@
 package com.hackathon.backend.repository;
 
+import com.hackathon.backend.enumeration.ProductCategory;
 import com.hackathon.backend.model.Product;
-import com.hackathon.backend.model.enumeration.Category;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,10 +17,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> getProducts();
 
     @Query("SELECT DISTINCT p.category FROM Product p")
-    List<Category> getCategories();
+    List<ProductCategory> getCategories();
 
-    @Query("SELECT u.products FROM User u WHERE u.id = :user_id")
+    @Query("SELECT u.productUserHas FROM User u WHERE u.id = :user_id")
     Set<Product> getUserProducts(@Param("user_id") Long userId);
 
-    List<Product> getProductsByCategory(Category category, Pageable pageable);
+    List<Product> getProductsByCategory(ProductCategory category, Pageable pageable);
 }

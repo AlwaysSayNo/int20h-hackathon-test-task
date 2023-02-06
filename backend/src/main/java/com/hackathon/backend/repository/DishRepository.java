@@ -24,6 +24,6 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
             """)
     List<Dish> getDishesWithALlProducts(@Param("product_ids") List<Long> productIds);
 
-    @Query("SELECT u.dishes FROM User u WHERE u.id = :user_id")
-    List<Dish> getCustomDishes (Pageable pageable, @Param("user_id") Long userId);
+    @Query("SELECT u.productUserHas FROM User u WHERE u.id = :user_id")
+    List<Dish> getCustomDishes(Pageable pageable, @Param("user_id") Long userId);
 }
