@@ -47,5 +47,4 @@ public class FavoriteDishes {
             uniqueConstraints = @UniqueConstraint(columnNames = {"favorite_dishes_id", "dish_id"})
     )
     private Set<Dish> dishes = new LinkedHashSet<>();
-
 }

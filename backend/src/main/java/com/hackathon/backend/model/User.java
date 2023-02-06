@@ -42,7 +42,7 @@ public class User {
             fetch = FetchType.LAZY,
             cascade = CascadeType.MERGE
     )
-    @JoinTable(name = "custome_dishes",
+    @JoinTable(name = "custom_dishes",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "dish_id"})
