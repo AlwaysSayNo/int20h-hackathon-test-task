@@ -1,17 +1,17 @@
-package com.hackathon.backend.model;
+package com.hackathon.backend.dto;
 
+import com.hackathon.backend.model.Dish;
+import com.hackathon.backend.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class DishWithProducts {
+public class DishWithProductsDto {
     private List<Product> products;
     private Dish dish;
 }

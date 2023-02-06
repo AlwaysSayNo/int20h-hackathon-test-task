@@ -1,7 +1,8 @@
 package com.hackathon.backend.service;
 
+import com.hackathon.backend.dto.ProductWithMeasureDto;
 import com.hackathon.backend.model.Dish;
-import com.hackathon.backend.model.DishWithProducts;
+import com.hackathon.backend.dto.DishWithProductsDto;
 import com.hackathon.backend.model.Product;
 import com.hackathon.backend.model.ProductToDish;
 import com.hackathon.backend.model.enumeration.SortingOption;
@@ -43,12 +44,12 @@ public class DishService {
         return dishRepository.getDishes(pageable);
     }
 
-    Optional<DishWithProducts> getDishInfo(Long id) {
+    Optional<DishWithProductsDto> getDishInfo(Long id) {
         return dishRepository.getDishById(id).map(dish -> {
             List<Product> products = productToDishRepository.getProductToDishByDish(dish).stream()
                     .map(ProductToDish::getProduct)
                     .toList();
-            return new DishWithProducts(products, dish);
+            return new DishWithProductsDto(products, dish);
         });
     }
 
@@ -59,11 +60,14 @@ public class DishService {
         return dishRepository.getDishesWithALlProducts(userProductIds);
     }
 
-    @Transactional
-    Dish insertDish(Dish dish, List<Product> products, String measure) {
+    @Transactional(rollbackFor = Exception.class)
+    Dish insertDish(Dish dish, List<ProductWithMeasureDto> productsWithMeasures) {
         Dish insertedDish = dishRepository.save(dish);
-        List<ProductToDish> productToDishes = products.stream()
-                .map(product -> new ProductToDish().setDish(insertedDish).setProduct(product).setMeasure(measure))
+        List<ProductToDish> productToDishes = productsWithMeasures.stream()
+                .map(productWithMeasure -> new ProductToDish()
+                        .setDish(insertedDish)
+                        .setProduct(productWithMeasure.getProduct())
+                        .setMeasure(productWithMeasure.getMeasure()))
                 .toList();
         productToDishRepository.saveAll(productToDishes);
         return dish;
