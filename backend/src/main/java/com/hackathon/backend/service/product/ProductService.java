@@ -48,10 +48,24 @@ public class ProductService {
         return productRepository.getProductsByCategory(category, pageable);
     }
 
-    public ProductDto mapToProductDto(Product product) {
-        return new ProductDto()
-                .setName(product.getName())
-                .setCategory(product.getCategory())
-                .setImageUrl(product.getImageUrl());
+    public List<Product> saveAll(List<Product> entities) {
+        return productRepository.saveAll(entities);
     }
+
+    public static ProductDto mapToDto(Product entity) {
+        return new ProductDto()
+                .setId(entity.getId())
+                .setName(entity.getName())
+                .setCategory(entity.getCategory())
+                .setImageUrl(entity.getImageUrl());
+    }
+
+    public static Product mapToEntity(ProductDto dto) {
+        return new Product()
+                .setId(dto.getId())
+                .setName(dto.getName())
+                .setCategory(dto.getCategory())
+                .setImageUrl(dto.getImageUrl());
+    }
+
 }

@@ -1,16 +1,22 @@
-package com.hackathon.backend.service;
+package com.hackathon.backend.service.mealapi;
 
 import com.hackathon.backend.dto.DishDto;
 import com.hackathon.backend.dto.ProductDto;
-import com.hackathon.backend.dto.ProductToDishDto;
 import com.hackathon.backend.dto.api.ListIngredientApiDto;
 import com.hackathon.backend.dto.api.ListMealApiDto;
 import com.hackathon.backend.dto.api.MealApiDto;
 import com.hackathon.backend.enumeration.MealApi;
 import com.hackathon.backend.enumeration.ProductCategory;
 import com.hackathon.backend.enumeration.Template;
+import com.hackathon.backend.model.Dish;
+import com.hackathon.backend.model.Product;
+import com.hackathon.backend.model.ProductToDish;
+import com.hackathon.backend.service.DishService;
+import com.hackathon.backend.service.ProductService;
+import com.hackathon.backend.service.ProductToDishService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -29,69 +36,94 @@ public class ApiService {
 
     private final Map<ProductCategory, String> productCategoryData;
     private final RestTemplate restTemplate;
+    private final DishService dishService;
+    private final ProductService productService;
+    private final ProductToDishService productToDishService;
 
-    private final Integer DISH_START_ID = 52802;
-    private final Integer DISH_END_ID = 53603;
-    private final Integer INGREDIENT_FIELDS_AMOUNT = 20;
-    private final Integer MEALS_FROM_API_AMOUNT = 250;
+    @Value("${meal_api.meal.start_id}")
+    private Integer MEAL_START_ID;
+    @Value("${meal_api.meal.end_id}")
+    private Integer MEAL_END_ID;
+    @Value("${meal_api.ingredient.fields_amount}")
+    private Integer INGREDIENT_FIELDS_AMOUNT;
+    @Value("${meal_api.meal.pulled_amount}")
+    private Integer MEALS_PULLED_AMOUNT;
 
-    public ApiService(Map<ProductCategory, String> productCategoryData, RestTemplate restTemplate) {
+    public ApiService(Map<ProductCategory, String> productCategoryData, RestTemplate restTemplate,
+                      DishService dishService, ProductService productService, ProductToDishService productToDishService) {
         this.productCategoryData = productCategoryData;
         this.restTemplate = restTemplate;
+        this.dishService = dishService;
+        this.productService = productService;
+        this.productToDishService = productToDishService;
     }
 
-    public void warmDataBase() {
-        var products = getAllProducts();
+    public void warmDatabase() {
         var meals = getAllMeals();
-        var dishesTmp = getAllDishes(meals);
+        var productsToDishes = new ArrayList<ProductToDish>();
 
-        var allProductsToDish = new ArrayList<ProductToDishDto>();
-        var dishes = new ArrayList<DishDto>(dishesTmp.size());
+        var products = getAllProducts()
+                .stream()
+                .map(ProductService::mapToEntity)
+                .collect(Collectors.toList());
+        productService.saveAll(products);
+
+        var dishes = getAllDishes(meals)
+                .stream()
+                .map(DishService::mapToEntity)
+                .collect(Collectors.toList());
+        dishService.saveAll(dishes);
+
+
+        var dishesToDelete = new ArrayList<Dish>();
 
         for (int i = 0; i < meals.size(); ++i) {
-            var productsToDish = getAllProductsForMeal(meals.get(i), dishesTmp.get(i), products);
+            var productsToDish = getAllProductsForMeal(meals.get(i), dishes.get(i), products);
+
 
             if (!productsToDish.isEmpty()) {
-                allProductsToDish.addAll(productsToDish);
-                dishes.add(dishesTmp.get(i));
+                productsToDishes.addAll(productsToDish);
+            }
+            else {
+                dishesToDelete.add(dishes.get(i));
             }
         }
+
+        dishService.deleteAll(dishesToDelete);
+        productToDishService.saveAll(productsToDishes);
     }
 
-    public List<ProductToDishDto> getAllProductsForMeal(MealApiDto mealApiDto, DishDto dishDto, List<ProductDto> productsDto) {
-        var result = new ArrayList<ProductToDishDto>();
+    private List<ProductToDish> getAllProductsForMeal(MealApiDto mealApiDto, Dish dish,
+                                                        List<Product> products) {
+        var result = new ArrayList<ProductToDish>();
         for (int i = 1; i <= INGREDIENT_FIELDS_AMOUNT; ++i) {
             var info = getProductToDishInfo(mealApiDto, i);
             if (info == null) break;
 
             var compareName = formatIngredientNameForComparison(info.get(0));
-            var productDto = productsDto.stream()
+            var productDto = products.stream()
                     .filter(p -> p.getName().equals(compareName))
                     .findAny()
                     .orElse(null);
 
             if (productDto != null) {
-                var productToDishDto = new ProductToDishDto()
+                var productToDish = new ProductToDish()
                         .setMeasure(info.get(1))
-                        .setDish(dishDto)
+                        .setDish(dish)
                         .setProduct(productDto);
-                result.add(productToDishDto);
+
+                result.add(productToDish);
             }
         }
 
         return result;
     }
 
-    public List<ProductDto> getAllProducts() {
+    private List<ProductDto> getAllProducts() {
         var productsDto = parseAllProductFiles();
         setProductImagesIfExist(productsDto);
 
         return productsDto;
-    }
-
-    public List<DishDto> getAllDishes() {
-        var meals = getAllMeals();
-        return getAllDishes(meals);
     }
 
     private List<DishDto> getAllDishes(List<MealApiDto> meals) {
@@ -106,9 +138,9 @@ public class ApiService {
     }
 
     private List<MealApiDto> getAllMeals() {
-        var meals = new ArrayList<MealApiDto>(MEALS_FROM_API_AMOUNT);
+        var meals = new ArrayList<MealApiDto>(MEALS_PULLED_AMOUNT);
 
-        for (int i = DISH_START_ID; i < DISH_START_ID + MEALS_FROM_API_AMOUNT; ++i) {
+        for (int i = MEAL_START_ID; i < MEAL_START_ID + MEALS_PULLED_AMOUNT; ++i) {
             var mealApiDto = getMealApiDtoById(i);
             if (mealApiDto != null) meals.add(mealApiDto);
         }

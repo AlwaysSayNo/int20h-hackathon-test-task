@@ -32,7 +32,7 @@ public class Product {
     @Column(nullable = false)
     private ProductCategory category;
 
-    @Column(nullable = false)
+    @Column
     private String imageUrl;
 
     @Override

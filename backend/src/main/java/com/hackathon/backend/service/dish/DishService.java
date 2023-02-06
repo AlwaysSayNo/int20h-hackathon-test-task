@@ -2,7 +2,6 @@ package com.hackathon.backend.service.dish;
 
 import com.hackathon.backend.dto.DishDto;
 import com.hackathon.backend.dto.DishWithProductsDto;
-import com.hackathon.backend.dto.ProductDto;
 import com.hackathon.backend.dto.ProductWithMeasureDto;
 import com.hackathon.backend.enumeration.DishSortBy;
 import com.hackathon.backend.enumeration.SortingOption;
@@ -15,6 +14,7 @@ import com.hackathon.backend.repository.ProductRepository;
 import com.hackathon.backend.repository.ProductToDishRepository;
 import com.hackathon.backend.service.user.UserService;
 import com.hackathon.backend.util.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,23 +26,22 @@ import java.util.Objects;
 
 @Service
 public class DishService {
+
     private final DishRepository dishRepository;
-
     private final ProductRepository productRepository;
-
-    private final ProductToDishRepository productToDishRepository;
+    private final ProductToDishService productToDishService;
 
     private final UserService userService;
 
     public DishService(
             DishRepository dishRepository,
             ProductRepository productRepository,
-            ProductToDishRepository productToDishRepository,
+            ProductToDishService productToDishService
             UserService userService
     ) {
         this.dishRepository = dishRepository;
         this.productRepository = productRepository;
-        this.productToDishRepository = productToDishRepository;
+        this.productToDishService = productToDishService;
         this.userService = userService;
     }
 
@@ -53,7 +52,7 @@ public class DishService {
 
     public DishWithProductsDto getDishInfo(Long id) {
         return dishRepository.getDishById(id).map(dish -> {
-            List<Product> products = productToDishRepository.getProductToDishByDish(dish).stream()
+            List<Product> products = productToDishService.getAllByDish(dish).stream()
                     .map(ProductToDish::getProduct)
                     .toList();
             return new DishWithProductsDto(products, dish);
@@ -70,14 +69,14 @@ public class DishService {
 
     @Transactional(rollbackFor = Exception.class)
     public Dish insertDish(DishDto dishDto, List<ProductWithMeasureDto> productsWithMeasures) {
-        Dish dish = dishRepository.save(mapToDish(dishDto));
+        Dish dish = dishRepository.save(mapToEntity(dishDto));
         List<ProductToDish> productToDishes = productsWithMeasures.stream()
                 .map(productWithMeasure -> new ProductToDish()
                         .setDish(dish)
-                        .setProduct(mapToProduct(productWithMeasure.getProductDto()))
+                        .setProduct(ProductService.mapToEntity(productWithMeasure.getProductDto()))
                         .setMeasure(productWithMeasure.getMeasure()))
                 .toList();
-        productToDishRepository.saveAll(productToDishes);
+        productToDishService.saveAll(productToDishes);
         return dish;
     }
 
@@ -105,28 +104,31 @@ public class DishService {
         return dishRepository.getCustomDishes(pageable, userId);
     }
 
-    private Product mapToProduct(ProductDto productDto) {
-        return new Product()
-                .setName(productDto.getName())
-                .setCategory(productDto.getCategory())
-                .setImageUrl(productDto.getImageUrl());
+    public List<Dish> saveAll(List<Dish> entities) {
+        return dishRepository.saveAll(entities);
     }
 
-    private Dish mapToDish(DishDto dishDto) {
+    public void deleteAll(List<Dish> entities) {
+        dishRepository.deleteAll(entities);
+    }
+
+    public static Dish mapToEntity(DishDto dto) {
         return new Dish()
-                .setName(dishDto.getName())
-                .setRecipe(dishDto.getRecipe())
-                .setDifficulty(dishDto.getDifficulty())
-                .setVotesAmount(dishDto.getVotesAmount())
-                .setImageUrl(dishDto.getImageUrl());
+                .setId(dto.getId())
+                .setName(dto.getName())
+                .setRecipe(dto.getRecipe())
+                .setDifficulty(dto.getDifficulty())
+                .setVotesAmount(dto.getVotesAmount())
+                .setImageUrl(dto.getImageUrl());
     }
 
-    public DishDto mapToDishDto(Dish dish) {
+    public static DishDto mapToDto(Dish entity) {
         return new DishDto()
-                .setName(dish.getName())
-                .setRecipe(dish.getRecipe())
-                .setDifficulty(dish.getDifficulty())
-                .setVotesAmount(dish.getVotesAmount())
-                .setImageUrl(dish.getImageUrl());
+                .setId(entity.getId())
+                .setName(entity.getName())
+                .setRecipe(entity.getRecipe())
+                .setDifficulty(entity.getDifficulty())
+                .setVotesAmount(entity.getVotesAmount())
+                .setImageUrl(entity.getImageUrl());
     }
 }
