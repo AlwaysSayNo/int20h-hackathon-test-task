@@ -49,15 +49,19 @@ public class ProductionSecurityConfiguration implements WebMvcConfigurer {
     }
 
     private String[] permittedEndpoints() {
-        return new String[] {
+        return new String[]{
                 "/hackathon/api/v1/login",
                 "/hackathon/api/v1/registration"
         };
     }
 
     private String[] authorizedEndpoints() {
-        return new String[] {
+        return new String[]{
                 "/hackathon/api/v1/user",
+                "/hackathon/api/v1/favorite/dish",
+                "/hackathon/api/v1/favorite/dish/list",
+                "/hackathon/api/v1/favorite/product",
+                "/hackathon/api/v1/favorite/product/list",
         };
     }
 }

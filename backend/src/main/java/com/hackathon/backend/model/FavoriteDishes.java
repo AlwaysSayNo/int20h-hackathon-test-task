@@ -41,11 +41,11 @@ public class FavoriteDishes {
             fetch = FetchType.LAZY,
             cascade = CascadeType.MERGE
     )
-    @JoinTable(name = "favorite_dishes_to_products",
+    @JoinTable(name = "favorite_dishes_to_dishes",
             joinColumns = @JoinColumn(name = "favorite_dishes_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"favorite_dishes_id", "dish_id"})
     )
-    private Set<Dish> products = new LinkedHashSet<>();
+    private Set<Dish> dishes = new LinkedHashSet<>();
 
 }
