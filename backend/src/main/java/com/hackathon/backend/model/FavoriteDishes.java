@@ -46,6 +46,5 @@ public class FavoriteDishes {
             inverseJoinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"favorite_dishes_id", "dish_id"})
     )
-    private Set<Dish> products = new LinkedHashSet<>();
-
+    private Set<Dish> dishes = new LinkedHashSet<>();
 }
