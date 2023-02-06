@@ -17,6 +17,13 @@ public class FavoriteProductService {
     }
 
     public FavoriteProducts insertFavoriteProducts(FavoriteProductsDto favoriteProductsDto) {
-        return favoriteProductRepository.save(FavoriteProducts.fromFavoriteProductsDto(favoriteProductsDto));
+        return favoriteProductRepository.save(mapToFavoriteProducts(favoriteProductsDto));
+    }
+
+    private FavoriteProducts mapToFavoriteProducts(FavoriteProductsDto favoriteProductsDto) {
+        return new FavoriteProducts()
+                .setName(favoriteProductsDto.getName())
+                .setUser(favoriteProductsDto.getUser())
+                .setProducts(favoriteProductsDto.getProducts());
     }
 }

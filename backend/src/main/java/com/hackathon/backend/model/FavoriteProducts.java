@@ -1,6 +1,5 @@
 package com.hackathon.backend.model;
 
-import com.hackathon.backend.dto.FavoriteProductsDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,11 +47,4 @@ public class FavoriteProducts {
             uniqueConstraints = @UniqueConstraint(columnNames = {"favorite_products_id", "product_id"})
     )
     private Set<Product> products = new LinkedHashSet<>();
-
-    public static FavoriteProducts fromFavoriteProductsDto(FavoriteProductsDto favoriteProductsDto) {
-        return new FavoriteProducts()
-                .setName(favoriteProductsDto.getName())
-                .setUser(favoriteProductsDto.getUser())
-                .setProducts(favoriteProductsDto.getProducts());
-    }
 }

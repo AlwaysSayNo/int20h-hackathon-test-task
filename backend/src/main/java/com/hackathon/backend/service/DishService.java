@@ -1,6 +1,7 @@
 package com.hackathon.backend.service;
 
 import com.hackathon.backend.dto.DishDto;
+import com.hackathon.backend.dto.ProductDto;
 import com.hackathon.backend.dto.ProductWithMeasureDto;
 import com.hackathon.backend.dto.enumeration.DishSortBy;
 import com.hackathon.backend.dto.enumeration.SortingOption;
@@ -64,11 +65,11 @@ public class DishService {
 
     @Transactional(rollbackFor = Exception.class)
     public Dish insertDish(DishDto dishDto, List<ProductWithMeasureDto> productsWithMeasures) {
-        Dish dish = dishRepository.save(Dish.fromDishDto(dishDto));
+        Dish dish = dishRepository.save(mapToDish(dishDto));
         List<ProductToDish> productToDishes = productsWithMeasures.stream()
                 .map(productWithMeasure -> new ProductToDish()
                         .setDish(dish)
-                        .setProduct(Product.fromProductDto(productWithMeasure.getProductDto()))
+                        .setProduct(mapToProduct(productWithMeasure.getProductDto()))
                         .setMeasure(productWithMeasure.getMeasure()))
                 .toList();
         productToDishRepository.saveAll(productToDishes);
@@ -83,5 +84,21 @@ public class DishService {
         // TODO: 05.02.2023 Move page size to constants or pass as argument;
         Pageable pageable = PageRequest.of(page, 10, sort);
         return dishRepository.getCustomDishes(pageable, userId);
+    }
+
+    private Product mapToProduct(ProductDto productDto) {
+        return new Product()
+                .setName(productDto.getName())
+                .setCategory(productDto.getCategory())
+                .setImageUrl(productDto.getImageUrl());
+    }
+
+    private Dish mapToDish(DishDto dishDto) {
+        return new Dish()
+                .setName(dishDto.getName())
+                .setRecipe(dishDto.getRecipe())
+                .setDifficulty(dishDto.getDifficulty())
+                .setVotesAmount(dishDto.getVotesAmount())
+                .setImageUrl(dishDto.getImageUrl());
     }
 }

@@ -17,6 +17,13 @@ public class FavoriteDishService {
     }
 
     public FavoriteDishes insertFavoriteDishes(FavoriteDishesDto favoriteDishesDto) {
-        return favoriteDishRepository.save(FavoriteDishes.fromFavoriteDishesDto(favoriteDishesDto));
+        return favoriteDishRepository.save(mapToFavoriteDishes(favoriteDishesDto));
+    }
+
+    private FavoriteDishes mapToFavoriteDishes(FavoriteDishesDto favoriteDishesDto) {
+        return new FavoriteDishes()
+                .setName(favoriteDishesDto.getName())
+                .setUser(favoriteDishesDto.getUser())
+                .setDishes(favoriteDishesDto.getDishes());
     }
 }
