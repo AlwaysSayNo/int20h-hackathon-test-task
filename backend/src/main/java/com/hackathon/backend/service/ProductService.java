@@ -1,5 +1,6 @@
 package com.hackathon.backend.service;
 
+import com.hackathon.backend.dto.ProductDto;
 import com.hackathon.backend.model.Product;
 import com.hackathon.backend.model.enumeration.Category;
 import com.hackathon.backend.repository.ProductRepository;
@@ -42,5 +43,13 @@ public class ProductService {
         // TODO: 05.02.2023 Move page size to constants or pass as argument
         Pageable pageable = PageRequest.of(page, 10);
         return productRepository.getProductsByCategory(category, pageable);
+    }
+
+    public ProductDto mapToProductDto(Product product) {
+        return ProductDto.builder()
+                .name(product.getName())
+                .category(product.getCategory())
+                .imageUrl(product.getImageUrl())
+                .build();
     }
 }

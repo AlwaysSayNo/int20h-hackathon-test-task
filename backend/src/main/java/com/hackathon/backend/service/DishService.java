@@ -101,4 +101,14 @@ public class DishService {
                 .setVotesAmount(dishDto.getVotesAmount())
                 .setImageUrl(dishDto.getImageUrl());
     }
+
+    public DishDto mapToDishDto(Dish dish) {
+        return DishDto.builder()
+                .name(dish.getName())
+                .recipe(dish.getRecipe())
+                .difficulty(dish.getDifficulty())
+                .votesAmount(dish.getVotesAmount())
+                .imageUrl(dish.getImageUrl())
+                .build();
+    }
 }

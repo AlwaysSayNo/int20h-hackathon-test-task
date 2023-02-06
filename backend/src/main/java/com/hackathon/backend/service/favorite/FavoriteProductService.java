@@ -5,6 +5,7 @@ import com.hackathon.backend.dto.favorite.FavoriteProductViewDto;
 import com.hackathon.backend.model.FavoriteProducts;
 import com.hackathon.backend.repository.FavoriteProductRepository;
 import com.hackathon.backend.repository.ProductRepository;
+import com.hackathon.backend.service.ProductService;
 import com.hackathon.backend.service.user.UserService;
 import com.hackathon.backend.util.LabelValue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,15 @@ public class FavoriteProductService {
     private final UserService userService;
     private final FavoriteProductRepository favoriteProductRepository;
     private final ProductRepository productRepository;
+    private final ProductService productService;
 
     @Autowired
     public FavoriteProductService(UserService userService, FavoriteProductRepository favoriteProductRepository,
-                                  ProductRepository productRepository) {
+                                  ProductRepository productRepository, ProductService productService) {
         this.userService = userService;
         this.favoriteProductRepository = favoriteProductRepository;
         this.productRepository = productRepository;
+        this.productService = productService;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -76,8 +79,11 @@ public class FavoriteProductService {
         var viewDto = new FavoriteProductViewDto();
         viewDto.setId(favoriteProducts.getId());
         viewDto.setName(favoriteProducts.getName());
-//        TODO add using productService map
-//        viewDto.setProductList(favoriteProducts.getProducts());
+
+        var dishDtoList = favoriteProducts.getProducts().stream()
+                .map(productService::mapToProductDto)
+                .toList();
+        viewDto.setProductList(dishDtoList);
         return viewDto;
     }
 }

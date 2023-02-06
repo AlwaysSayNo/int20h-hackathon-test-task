@@ -1,6 +1,6 @@
 package com.hackathon.backend.dto.favorite;
 
-import com.hackathon.backend.dto.product.ProductDto;
+import com.hackathon.backend.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

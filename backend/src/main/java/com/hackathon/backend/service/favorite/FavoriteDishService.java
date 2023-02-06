@@ -5,6 +5,7 @@ import com.hackathon.backend.dto.favorite.FavoriteDishViewDto;
 import com.hackathon.backend.model.FavoriteDishes;
 import com.hackathon.backend.repository.DishRepository;
 import com.hackathon.backend.repository.FavoriteDishRepository;
+import com.hackathon.backend.service.DishService;
 import com.hackathon.backend.service.user.UserService;
 import com.hackathon.backend.util.LabelValue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,15 @@ public class FavoriteDishService {
     private final UserService userService;
     private final FavoriteDishRepository favoriteDishRepository;
     private final DishRepository dishRepository;
+    private final DishService dishService;
 
     @Autowired
     public FavoriteDishService(UserService userService, FavoriteDishRepository favoriteDishRepository,
-                               DishRepository dishRepository) {
+                               DishRepository dishRepository, DishService dishService) {
         this.userService = userService;
         this.favoriteDishRepository = favoriteDishRepository;
         this.dishRepository = dishRepository;
+        this.dishService = dishService;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -76,30 +79,11 @@ public class FavoriteDishService {
         var viewDto = new FavoriteDishViewDto();
         viewDto.setId(favoriteDishes.getId());
         viewDto.setName(favoriteDishes.getName());
-//        TODO add using dishService map
-//        viewDto.setDishList(favoriteDishes.getDishes());
+
+        var dishDtoList = favoriteDishes.getDishes().stream()
+                .map(dishService::mapToDishDto)
+                .toList();
+        viewDto.setDishList(dishDtoList);
         return viewDto;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

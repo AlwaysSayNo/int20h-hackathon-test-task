@@ -1,7 +1,10 @@
 package com.hackathon.backend.dto.favorite;
 
-import com.hackathon.backend.dto.dish.DishDto;
-import lombok.*;
+import com.hackathon.backend.dto.DishDto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 

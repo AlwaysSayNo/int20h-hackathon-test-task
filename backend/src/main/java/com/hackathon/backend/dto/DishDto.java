@@ -1,11 +1,12 @@
 package com.hackathon.backend.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class DishDto {
     private String name;
