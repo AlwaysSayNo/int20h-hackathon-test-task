@@ -2,7 +2,6 @@ package com.hackathon.backend.service;
 
 import com.hackathon.backend.dto.DishDto;
 import com.hackathon.backend.dto.DishWithProductsDto;
-import com.hackathon.backend.dto.ProductDto;
 import com.hackathon.backend.dto.ProductWithMeasureDto;
 import com.hackathon.backend.enumeration.DishSortBy;
 import com.hackathon.backend.enumeration.SortingOption;
@@ -65,11 +64,11 @@ public class DishService {
 
     @Transactional(rollbackFor = Exception.class)
     public Dish insertDish(DishDto dishDto, List<ProductWithMeasureDto> productsWithMeasures) {
-        Dish dish = dishRepository.save(mapToDish(dishDto));
+        Dish dish = dishRepository.save(mapToEntity(dishDto));
         List<ProductToDish> productToDishes = productsWithMeasures.stream()
                 .map(productWithMeasure -> new ProductToDish()
                         .setDish(dish)
-                        .setProduct(mapToProduct(productWithMeasure.getProductDto()))
+                        .setProduct(ProductService.mapToEntity(productWithMeasure.getProductDto()))
                         .setMeasure(productWithMeasure.getMeasure()))
                 .toList();
         productToDishRepository.saveAll(productToDishes);
@@ -86,14 +85,7 @@ public class DishService {
         return dishRepository.getCustomDishes(pageable, userId);
     }
 
-    private Product mapToProduct(ProductDto productDto) {
-        return new Product()
-                .setName(productDto.getName())
-                .setCategory(productDto.getCategory())
-                .setImageUrl(productDto.getImageUrl());
-    }
-
-    private Dish mapToDish(DishDto dishDto) {
+    private static Dish mapToEntity(DishDto dishDto) {
         return new Dish()
                 .setName(dishDto.getName())
                 .setRecipe(dishDto.getRecipe())
@@ -102,12 +94,12 @@ public class DishService {
                 .setImageUrl(dishDto.getImageUrl());
     }
 
-    public DishDto mapToDishDto(Dish dish) {
+    public static DishDto mapToDto(Dish entity) {
         return new DishDto()
-                .setName(dish.getName())
-                .setRecipe(dish.getRecipe())
-                .setDifficulty(dish.getDifficulty())
-                .setVotesAmount(dish.getVotesAmount())
-                .setImageUrl(dish.getImageUrl());
+                .setName(entity.getName())
+                .setRecipe(entity.getRecipe())
+                .setDifficulty(entity.getDifficulty())
+                .setVotesAmount(entity.getVotesAmount())
+                .setImageUrl(entity.getImageUrl());
     }
 }

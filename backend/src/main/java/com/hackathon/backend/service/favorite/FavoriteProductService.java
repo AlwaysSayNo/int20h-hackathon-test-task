@@ -81,7 +81,7 @@ public class FavoriteProductService {
         viewDto.setName(favoriteProducts.getName());
 
         var dishDtoList = favoriteProducts.getProducts().stream()
-                .map(productService::mapToProductDto)
+                .map(ProductService::mapToDto)
                 .toList();
         viewDto.setProductList(dishDtoList);
         return viewDto;

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -45,10 +46,18 @@ public class ProductService {
         return productRepository.getProductsByCategory(category, pageable);
     }
 
-    public ProductDto mapToProductDto(Product product) {
+    public static ProductDto mapToDto(Product entity) {
         return new ProductDto()
-                .setName(product.getName())
-                .setCategory(product.getCategory())
-                .setImageUrl(product.getImageUrl());
+                .setName(entity.getName())
+                .setCategory(entity.getCategory())
+                .setImageUrl(entity.getImageUrl());
     }
+
+    public static Product mapToEntity(ProductDto dto) {
+        return new Product()
+                .setName(dto.getName())
+                .setCategory(dto.getCategory())
+                .setImageUrl(dto.getImageUrl());
+    }
+
 }
