@@ -10,7 +10,6 @@ import com.hackathon.backend.model.Product;
 import com.hackathon.backend.model.ProductToDish;
 import com.hackathon.backend.repository.DishRepository;
 import com.hackathon.backend.repository.ProductRepository;
-import com.hackathon.backend.repository.ProductToDishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,21 +22,20 @@ import java.util.Optional;
 
 @Service
 public class DishService {
+
     private final DishRepository dishRepository;
-
     private final ProductRepository productRepository;
-
-    private final ProductToDishRepository productToDishRepository;
+    private final ProductToDishService productToDishService;
 
     @Autowired
     public DishService(
             DishRepository dishRepository,
             ProductRepository productRepository,
-            ProductToDishRepository productToDishRepository
+            ProductToDishService productToDishService
     ) {
         this.dishRepository = dishRepository;
         this.productRepository = productRepository;
-        this.productToDishRepository = productToDishRepository;
+        this.productToDishService = productToDishService;
     }
 
     public List<Dish> getAllDishes(int page) {
@@ -48,7 +46,7 @@ public class DishService {
 
     public Optional<DishWithProductsDto> getDishInfo(Long id) {
         return dishRepository.getDishById(id).map(dish -> {
-            List<Product> products = productToDishRepository.getProductToDishByDish(dish).stream()
+            List<Product> products = productToDishService.getAllByDish(dish).stream()
                     .map(ProductToDish::getProduct)
                     .toList();
             return new DishWithProductsDto(products, dish);
@@ -71,7 +69,7 @@ public class DishService {
                         .setProduct(ProductService.mapToEntity(productWithMeasure.getProductDto()))
                         .setMeasure(productWithMeasure.getMeasure()))
                 .toList();
-        productToDishRepository.saveAll(productToDishes);
+        productToDishService.saveAll(productToDishes);
         return dish;
     }
 
@@ -85,17 +83,27 @@ public class DishService {
         return dishRepository.getCustomDishes(pageable, userId);
     }
 
-    private static Dish mapToEntity(DishDto dishDto) {
+    public List<Dish> saveAll(List<Dish> entities) {
+        return dishRepository.saveAll(entities);
+    }
+
+    public void deleteAll(List<Dish> entities) {
+        dishRepository.deleteAll(entities);
+    }
+
+    public static Dish mapToEntity(DishDto dto) {
         return new Dish()
-                .setName(dishDto.getName())
-                .setRecipe(dishDto.getRecipe())
-                .setDifficulty(dishDto.getDifficulty())
-                .setVotesAmount(dishDto.getVotesAmount())
-                .setImageUrl(dishDto.getImageUrl());
+                .setId(dto.getId())
+                .setName(dto.getName())
+                .setRecipe(dto.getRecipe())
+                .setDifficulty(dto.getDifficulty())
+                .setVotesAmount(dto.getVotesAmount())
+                .setImageUrl(dto.getImageUrl());
     }
 
     public static DishDto mapToDto(Dish entity) {
         return new DishDto()
+                .setId(entity.getId())
                 .setName(entity.getName())
                 .setRecipe(entity.getRecipe())
                 .setDifficulty(entity.getDifficulty())

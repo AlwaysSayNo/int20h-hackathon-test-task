@@ -20,15 +20,13 @@ public class FavoriteProductService {
     private final UserService userService;
     private final FavoriteProductRepository favoriteProductRepository;
     private final ProductRepository productRepository;
-    private final ProductService productService;
 
     @Autowired
     public FavoriteProductService(UserService userService, FavoriteProductRepository favoriteProductRepository,
-                                  ProductRepository productRepository, ProductService productService) {
+                                  ProductRepository productRepository) {
         this.userService = userService;
         this.favoriteProductRepository = favoriteProductRepository;
         this.productRepository = productRepository;
-        this.productService = productService;
     }
 
     @Transactional(rollbackFor = Exception.class)

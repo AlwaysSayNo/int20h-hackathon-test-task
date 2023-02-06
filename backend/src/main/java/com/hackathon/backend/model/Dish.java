@@ -27,12 +27,13 @@ public class Dish {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
+    @Lob
     private String recipe;
     @Column(nullable = false)
     private Double difficulty;
     @Column(nullable = false)
     private Integer votesAmount;
-    @Column(nullable = false)
+    @Column
     private String imageUrl;
 
     @Override
