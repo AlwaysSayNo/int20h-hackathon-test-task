@@ -1,4 +1,4 @@
-package com.hackathon.backend.service;
+package com.hackathon.backend.service.dish;
 
 import com.hackathon.backend.dto.DishDto;
 import com.hackathon.backend.dto.DishWithProductsDto;
@@ -9,10 +9,12 @@ import com.hackathon.backend.enumeration.SortingOption;
 import com.hackathon.backend.model.Dish;
 import com.hackathon.backend.model.Product;
 import com.hackathon.backend.model.ProductToDish;
+import com.hackathon.backend.model.User;
 import com.hackathon.backend.repository.DishRepository;
 import com.hackathon.backend.repository.ProductRepository;
 import com.hackathon.backend.repository.ProductToDishRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.hackathon.backend.service.user.UserService;
+import com.hackathon.backend.util.Constants;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 public class DishService {
@@ -30,33 +32,36 @@ public class DishService {
 
     private final ProductToDishRepository productToDishRepository;
 
-    @Autowired
+    private final UserService userService;
+
     public DishService(
             DishRepository dishRepository,
             ProductRepository productRepository,
-            ProductToDishRepository productToDishRepository
+            ProductToDishRepository productToDishRepository,
+            UserService userService
     ) {
         this.dishRepository = dishRepository;
         this.productRepository = productRepository;
         this.productToDishRepository = productToDishRepository;
+        this.userService = userService;
     }
 
-    public List<Dish> getAllDishes(int page) {
-        // TODO: 05.02.2023 Move page size to constants or pass as argument
-        Pageable pageable = PageRequest.of(page, 10);
+    public List<Dish> getAllDishes(Integer page) {
+        Pageable pageable = PageRequest.of(page, Constants.ITEMS_PER_PAGE);
         return dishRepository.getDishes(pageable);
     }
 
-    public Optional<DishWithProductsDto> getDishInfo(Long id) {
+    public DishWithProductsDto getDishInfo(Long id) {
         return dishRepository.getDishById(id).map(dish -> {
             List<Product> products = productToDishRepository.getProductToDishByDish(dish).stream()
                     .map(ProductToDish::getProduct)
                     .toList();
             return new DishWithProductsDto(products, dish);
-        });
+        }).orElseThrow(() -> new RuntimeException("Dish not found"));
     }
 
-    public List<Dish> getAvailableDishes(Long userId) {
+    public List<Dish> getAvailableDishes(String userLogin) throws Exception {
+        Long userId = userService.getUser(userLogin).getId();
         List<Long> userProductIds = productRepository.getUserProducts(userId).stream()
                 .map(Product::getId)
                 .toList();
@@ -76,13 +81,27 @@ public class DishService {
         return dish;
     }
 
-    public List<Dish> getCustomDishes(SortingOption sortingOption, DishSortBy dishSortBy, int page, Long userId) {
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteDish(String userLogin, Long dishId) throws Exception {
+        User user = userService.getUser(userLogin);
+        if(user.getCustomDishes().stream().map(Dish::getId).noneMatch(id -> Objects.equals(id, dishId))) {
+            throw new RuntimeException("User's dishes not contain selected dish");
+        }
+        dishRepository.deleteById(dishId);
+    }
+
+    public List<Dish> getCustomDishes(
+            SortingOption sortingOption,
+            DishSortBy dishSortBy,
+            String userLogin,
+            Integer page
+    ) throws Exception {
+        Long userId = userService.getUser(userLogin).getId();
         Sort sort = switch (sortingOption) {
             case ASCENDING -> Sort.by(dishSortBy.getSortBy()).ascending();
             case DESCENDING -> Sort.by(dishSortBy.getSortBy()).descending();
         };
-        // TODO: 05.02.2023 Move page size to constants or pass as argument;
-        Pageable pageable = PageRequest.of(page, 10, sort);
+        Pageable pageable = PageRequest.of(page, Constants.ITEMS_PER_PAGE, sort);
         return dishRepository.getCustomDishes(pageable, userId);
     }
 

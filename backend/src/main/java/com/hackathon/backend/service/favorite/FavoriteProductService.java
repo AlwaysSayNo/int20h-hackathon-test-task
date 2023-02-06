@@ -5,7 +5,7 @@ import com.hackathon.backend.dto.favorite.FavoriteProductViewDto;
 import com.hackathon.backend.model.FavoriteProducts;
 import com.hackathon.backend.repository.FavoriteProductRepository;
 import com.hackathon.backend.repository.ProductRepository;
-import com.hackathon.backend.service.ProductService;
+import com.hackathon.backend.service.product.ProductService;
 import com.hackathon.backend.service.user.UserService;
 import com.hackathon.backend.util.LabelValue;
 import org.springframework.beans.factory.annotation.Autowired;

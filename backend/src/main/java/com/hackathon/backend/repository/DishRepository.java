@@ -1,6 +1,7 @@
 package com.hackathon.backend.repository;
 
 import com.hackathon.backend.model.Dish;
+import lombok.NonNull;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,4 +27,6 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
 
     @Query("SELECT u.productUserHas FROM User u WHERE u.id = :user_id")
     List<Dish> getCustomDishes(Pageable pageable, @Param("user_id") Long userId);
+
+    void deleteById(@NonNull Long id);
 }

@@ -5,7 +5,7 @@ import com.hackathon.backend.dto.favorite.FavoriteDishViewDto;
 import com.hackathon.backend.model.FavoriteDishes;
 import com.hackathon.backend.repository.DishRepository;
 import com.hackathon.backend.repository.FavoriteDishRepository;
-import com.hackathon.backend.service.DishService;
+import com.hackathon.backend.service.dish.DishService;
 import com.hackathon.backend.service.user.UserService;
 import com.hackathon.backend.util.LabelValue;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,11 @@
-package com.hackathon.backend.service;
+package com.hackathon.backend.service.product;
 
 import com.hackathon.backend.dto.ProductDto;
 import com.hackathon.backend.enumeration.ProductCategory;
 import com.hackathon.backend.model.Product;
 import com.hackathon.backend.repository.ProductRepository;
+import com.hackathon.backend.service.user.UserService;
+import com.hackathon.backend.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,14 +22,16 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    private final UserService userService;
+
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, UserService userService) {
         this.productRepository = productRepository;
+        this.userService = userService;
     }
 
-    public Set<Product> getUserProducts(String token) {
-        // TODO: 05.02.2023 UserRepository get userId from token
-        long userId = -1;
+    public Set<Product> getUserProducts(String userLogin) throws Exception {
+        Long userId = userService.getUser(userLogin).getId();
         return productRepository.getUserProducts(userId);
     }
 
@@ -40,8 +44,7 @@ public class ProductService {
     }
 
     public List<Product> getProductsByCategory(ProductCategory category, int page) {
-        // TODO: 05.02.2023 Move page size to constants or pass as argument
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, Constants.ITEMS_PER_PAGE);
         return productRepository.getProductsByCategory(category, pageable);
     }
 
