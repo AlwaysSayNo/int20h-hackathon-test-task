@@ -13,6 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FavoriteProductViewDto extends AbstractFavoriteDto {
-    private List<ProductDto> productList;
+    private List<ProductDto> products;
 }
 

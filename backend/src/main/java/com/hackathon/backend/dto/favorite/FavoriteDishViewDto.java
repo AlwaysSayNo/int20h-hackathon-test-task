@@ -13,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FavoriteDishViewDto extends AbstractFavoriteDto {
-    private List<DishDto> dishList;
+    private List<DishDto> dishes;
 }
