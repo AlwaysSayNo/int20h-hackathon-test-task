@@ -26,8 +26,7 @@ public class Dish {
 
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
-    @Lob
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String recipe;
     @Column(nullable = false)
     private Double difficulty;

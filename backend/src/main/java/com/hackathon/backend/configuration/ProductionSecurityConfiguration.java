@@ -63,6 +63,7 @@ public class ProductionSecurityConfiguration implements WebMvcConfigurer {
                 "/hackathon/api/v1/favorite/product",
                 "/hackathon/api/v1/favorite/product/list",
                 "/hackathon/api/v1/meal/warm-database",
+                "/hackathon/api/v1/dish/difficulty"
         };
     }
 }

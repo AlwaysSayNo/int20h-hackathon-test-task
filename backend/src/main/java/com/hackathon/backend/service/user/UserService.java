@@ -55,6 +55,12 @@ public class UserService {
     }
 
     private UserDto mapToUserDto(User user) {
-        return new UserDto(user.getLogin());
+        return new UserDto(user.getId(), user.getLogin());
+    }
+
+    public static UserDto mapToDto(User entity) {
+        return new UserDto()
+                .setId(entity.getId())
+                .setLogin(entity.getLogin());
     }
 }
