@@ -91,6 +91,10 @@ public class DishService {
         dishRepository.deleteAll(entities);
     }
 
+    public void deleteAll() {
+        dishRepository.deleteAll();
+    }
+
     public static Dish mapToEntity(DishDto dto) {
         return new Dish()
                 .setId(dto.getId())

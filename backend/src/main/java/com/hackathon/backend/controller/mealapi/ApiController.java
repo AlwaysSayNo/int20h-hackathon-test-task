@@ -1,7 +1,7 @@
 package com.hackathon.backend.controller.mealapi;
 
 import com.hackathon.backend.service.mealapi.ApiService;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ public class ApiController {
         this.apiService = apiService;
     }
 
-    @GetMapping("/warm-database")
+    @PostMapping("/warm-database")
     void warmDataBase() {
         apiService.warmDatabase();
     }
