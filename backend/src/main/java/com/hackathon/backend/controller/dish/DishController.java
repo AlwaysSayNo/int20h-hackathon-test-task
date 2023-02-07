@@ -1,8 +1,7 @@
 package com.hackathon.backend.controller.dish;
 
-import com.hackathon.backend.dto.DishDto;
+import com.hackathon.backend.dto.DishWithMeasuredProductsDto;
 import com.hackathon.backend.dto.DishWithProductsDto;
-import com.hackathon.backend.dto.ProductWithMeasureDto;
 import com.hackathon.backend.enumeration.DishSortBy;
 import com.hackathon.backend.enumeration.SortingOption;
 import com.hackathon.backend.model.Dish;
@@ -62,9 +61,12 @@ public class DishController {
     }
 
     @PostMapping
-    public ResponseEntity<?> insertDish(DishDto dishDto, List<ProductWithMeasureDto> productWithMeasureDtoList) {
+    public ResponseEntity<?> insertDish(@RequestBody DishWithMeasuredProductsDto dishWithMeasuredProductsDto) {
         try {
-            Dish dish = dishService.insertDish(dishDto, productWithMeasureDtoList);
+            Dish dish = dishService.insertDish(
+                    dishWithMeasuredProductsDto.getDishDto(),
+                    dishWithMeasuredProductsDto.getProductWithMeasureDtoList()
+            );
             return ResponseEntity.ok(dish);
         } catch (Exception e) {
             return ResponseEntity
@@ -74,7 +76,7 @@ public class DishController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteDish(Principal principal, Long dishId) {
+    public ResponseEntity<?> deleteDish(Principal principal, @RequestParam("dish_id") Long dishId) {
         try {
             dishService.deleteDish(principal.getName(), dishId);
             return ResponseEntity.ok("Dish deleted successfully");
