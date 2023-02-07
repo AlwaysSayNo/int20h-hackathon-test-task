@@ -15,6 +15,7 @@ import com.hackathon.backend.service.ProductToDishService;
 import com.hackathon.backend.service.product.ProductService;
 import com.hackathon.backend.service.user.UserService;
 import com.hackathon.backend.util.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,6 +33,7 @@ public class DishService {
     private final ProductToDishService productToDishService;
     private final UserService userService;
 
+    @Autowired
     public DishService(
             DishRepository dishRepository,
             ProductRepository productRepository,
