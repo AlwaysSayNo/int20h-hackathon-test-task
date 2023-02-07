@@ -3,12 +3,14 @@ package com.hackathon.backend.controller.user;
 import com.hackathon.backend.dto.user.UserDto;
 import com.hackathon.backend.service.user.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/hackathon/api/v1/user")
 public class UserController {

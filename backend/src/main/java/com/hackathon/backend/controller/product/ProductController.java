@@ -5,16 +5,14 @@ import com.hackathon.backend.model.Product;
 import com.hackathon.backend.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/hackathon/api/v1/product")
 public class ProductController {

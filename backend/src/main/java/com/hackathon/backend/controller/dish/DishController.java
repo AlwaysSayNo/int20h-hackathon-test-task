@@ -20,6 +20,7 @@ import java.util.List;
  * DishController class represents the endpoints for the Dish management REST API.
  * This class uses DishService and DishDifficultyService for handling the business logic.
  */
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/hackathon/api/v1/dish")
 public class DishController {

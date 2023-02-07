@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/hackathon/api/v1/favorite/product")
 public class FavoriteProductController {
