@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  hackathon-int20h-test-task-db:
+    container_name: hackathon-int20h-test-task-db
+    image: postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PORT: ${POSTGRES_PORT}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+
+  hackathon-int20h-test-task-server:
+    image: hack-app
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://hackathon-int20h-test-task-db:${POSTGRES_PORT}/${POSTGRES_DATABASE}"
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      PORT: "8080"
+    depends_on:
+      - hackathon-int20h-test-task-db
