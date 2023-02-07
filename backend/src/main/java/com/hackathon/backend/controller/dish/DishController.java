@@ -30,9 +30,9 @@ public class DishController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllDishes(@RequestParam("page") Integer page) {
+    public ResponseEntity<?> getAllDishes(Principal principal, @RequestParam("page") Integer page) {
         try {
-            List<Dish> dishes = dishService.getAllDishes(page);
+            List<Dish> dishes = dishService.getAllDishes(principal.getName(), page);
             return ResponseEntity.ok(dishes);
         } catch (Exception e) {
             return ResponseEntity
@@ -42,9 +42,9 @@ public class DishController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity<?> getDishInfo(@RequestParam("id") Long id) {
+    public ResponseEntity<?> getDishInfo(Principal principal, @RequestParam("id") Long id) {
         try {
-            DishWithProductsDto dishWithProducts = dishService.getDishInfo(id);
+            DishWithProductsDto dishWithProducts = dishService.getDishInfo(principal.getName(), id);
             return ResponseEntity.ok(dishWithProducts);
         } catch (Exception e) {
             return ResponseEntity

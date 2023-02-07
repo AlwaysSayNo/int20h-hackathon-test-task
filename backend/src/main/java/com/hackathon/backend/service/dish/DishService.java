@@ -46,13 +46,15 @@ public class DishService {
         this.userService = userService;
     }
 
-    public List<Dish> getAllDishes(Integer page) {
+    public List<Dish> getAllDishes(String userLogin, Integer page) throws Exception {
+        Long userId = userService.getUser(userLogin).getId();
         Pageable pageable = PageRequest.of(page, Constants.ITEMS_PER_PAGE);
-        return dishRepository.getDishes(pageable);
+        return dishRepository.getDishes(pageable, userId);
     }
 
-    public DishWithProductsDto getDishInfo(Long id) {
-        return dishRepository.getDishById(id).map(dish -> {
+    public DishWithProductsDto getDishInfo(String userLogin, Long id) throws Exception {
+        Long userId = userService.getUser(userLogin).getId();
+        return dishRepository.getDishById(id, userId).map(dish -> {
             List<Product> products = productToDishService.getAllByDish(dish).stream()
                     .map(ProductToDish::getProduct)
                     .toList();
@@ -65,7 +67,7 @@ public class DishService {
         List<Long> userProductIds = productRepository.getUserProducts(userId).stream()
                 .map(Product::getId)
                 .toList();
-        return dishRepository.getDishesWithALlProducts(userProductIds);
+        return dishRepository.getDishesWithALlProducts(userId, userProductIds);
     }
 
     @Transactional(rollbackFor = Exception.class)
