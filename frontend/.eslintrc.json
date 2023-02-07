@@ -1,11 +1,4 @@
 {
-  "extends": [
-    "@atg-digital/eslint-config/base",
-    "@atg-digital/eslint-config/jest",
-    "@atg-digital/eslint-config/typescript",
-    "@atg-digital/eslint-config/react",
-    "@atg-digital/eslint-config/browser"
-  ],
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
   }
