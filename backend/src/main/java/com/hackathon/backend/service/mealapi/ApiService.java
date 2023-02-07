@@ -210,7 +210,8 @@ public class ApiService {
 
                 var productDto = new ProductDto()
                         .setName(line)
-                        .setCategory(category);
+                        .setCategory(category)
+                        .setImageUrl(category.getDefaultImageUrl());
 
                 result.add(productDto);
             }
