@@ -1,0 +1,102 @@
+salt
+black pepper
+garlic powder
+onion powder
+cayenne pepper
+paprika
+thyme
+oregano
+rosemary
+sage
+mustard powder
+cumin
+coriander
+turmeric
+cinnamon
+cloves
+nutmeg
+ginger
+cardamom
+fennel seeds
+anise seeds
+caraway seeds
+celery seeds
+dill seeds
+bay leaves
+star anise
+juniper berries
+saffron
+vanilla beans
+allspice
+white pepper
+green peppercorns
+black peppercorns
+red pepper flakes
+white wine vinegar
+balsamic vinegar
+apple cider vinegar
+rice vinegar
+soy sauce
+worcestershire sauce
+hot sauce
+barbecue sauce
+hoisin sauce
+teriyaki sauce
+fish sauce
+oyster sauce
+honey
+molasses
+brown sugar
+white sugar
+agave nectar
+corn syrup
+maple syrup
+tamari sauce
+rice wine
+sesame oil
+olive oil
+canola oil
+peanut oil
+coconut oil
+sunflower oil
+mustard seeds
+yellow mustard
+dijon mustard
+honey mustard
+wasabi
+horseradish
+pickles
+capers
+olives
+cacao
+anchovies
+sardines
+tuna
+salmon
+anchovy paste
+tomatoes
+ketchup
+mayonnaise
+yogurt
+buttermilk
+cheese
+parmesan cheese
+cheddar cheese
+feta cheese
+cream cheese
+sour cream
+heavy cream
+milk
+butter
+margarine
+olive tapenade
+pesto
+tapenade
+hummus
+aioli
+guacamole
+salsa
+chutney
+relish
+jam
+marzipan

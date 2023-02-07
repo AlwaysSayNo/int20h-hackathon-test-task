@@ -1,0 +1,35 @@
+chardonnay
+cabernet sauvignon
+pinot noir
+merlot
+sauvignon blanc
+riesling
+syrah
+shiraz
+zinfandel
+moscato
+pinot grigio
+malbec
+grenache
+barbera
+pinot blanc
+chenin blanc
+gewürztraminer
+viognier
+bordeaux blend
+burgundy blend
+rhone blend
+tempranillo
+port
+sherry
+sparkling wine
+rose wine
+prosecco
+lambrusco
+vermouth
+ice wine
+marsala
+rum
+dark rum
+light rum
+vodka
