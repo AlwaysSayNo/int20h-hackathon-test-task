@@ -51,6 +51,14 @@ public class FavoriteDishService {
         return dto;
     }
 
+    /**
+     * Updates the favorite dish collection with the provided information.
+     *
+     * @param id Long identifier of the favorite dish collection.
+     * @param dto FavoriteDishDto object with updated information for the favorite dish collection.
+     * @return FavoriteDishDto object with the updated information.
+     * @throws RuntimeException if the favorite dish collection with the provided identifier is not found.
+     */
     @Transactional(rollbackFor = Exception.class)
     public FavoriteDishDto updateFavoriteDish(Long id, FavoriteDishDto dto) {
         var favoriteCollection = favoriteDishRepository
@@ -63,11 +71,24 @@ public class FavoriteDishService {
         return dto;
     }
 
+    /**
+     * Deletes the favorite dish collection with the provided identifier.
+     *
+     * @param id Long identifier of the favorite dish collection.
+     * @throws RuntimeException if the favorite dish collection with the provided identifier is not found.
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteFavoriteDish(Long id) {
         favoriteDishRepository.deleteById(id);
     }
 
+    /**
+     * Retrieve a favorite dish by its id.
+     *
+     * @param id The id of the favorite dish to retrieve.
+     * @return The FavoriteDishViewDto object representing the retrieved favorite dish.
+     * @throws RuntimeException if the favorite dish is not found.
+     */
     public FavoriteDishViewDto getFavoriteDish(Long id) {
         var favoriteCollection = favoriteDishRepository
                 .findById(id)
@@ -75,11 +96,23 @@ public class FavoriteDishService {
         return mapToViewDto(favoriteCollection);
     }
 
+    /**
+     * Retrieve all label-value pairs of favorite dishes for a user.
+     *
+     * @param userLogin The login of the user.
+     * @return A list of LabelValue objects representing the favorite dishes of the user.
+     */
     public List<LabelValue> getAllLabelValueFavoriteDishesForUser(String userLogin) {
         var user = userService.getUser(userLogin);
         return favoriteDishRepository.getAllLabelValueFavoriteDishForUser(user.getId());
     }
 
+    /**
+     * Map a FavoriteDishes object to a FavoriteDishViewDto object.
+     *
+     * @param favoriteDishes The FavoriteDishes object to map.
+     * @return The FavoriteDishViewDto object representing the mapped favorite dishes.
+     */
     private FavoriteDishViewDto mapToViewDto(FavoriteDishes favoriteDishes) {
         var viewDto = new FavoriteDishViewDto();
         viewDto.setId(favoriteDishes.getId());
