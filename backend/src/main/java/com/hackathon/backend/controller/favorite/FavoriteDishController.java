@@ -43,7 +43,7 @@ public class FavoriteDishController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createFavoriteDish(Principal principal, FavoriteDishDto dto) {
+    public ResponseEntity<?> createFavoriteDish(Principal principal, @RequestBody FavoriteDishDto dto) {
         try {
             var createdFavoriteDishCollection = favoriteDishService
                     .createFavoriteDish(principal.getName(), dto);
@@ -56,7 +56,7 @@ public class FavoriteDishController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateFavoriteDish(@RequestParam Long id, FavoriteDishDto dto) {
+    public ResponseEntity<?> updateFavoriteDish(@RequestParam Long id, @RequestBody FavoriteDishDto dto) {
         try {
             var updatedFavoriteDishCollection = favoriteDishService.updateFavoriteDish(id, dto);
             return ResponseEntity.ok(updatedFavoriteDishCollection);
