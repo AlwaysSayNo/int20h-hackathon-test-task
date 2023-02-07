@@ -52,6 +52,10 @@ public class ProductService {
         return productRepository.saveAll(entities);
     }
 
+    public void deleteAll() {
+        productRepository.deleteAll();
+    }
+
     public static ProductDto mapToDto(Product entity) {
         return new ProductDto()
                 .setId(entity.getId())
@@ -59,7 +63,6 @@ public class ProductService {
                 .setCategory(entity.getCategory())
                 .setImageUrl(entity.getImageUrl());
     }
-
     public static Product mapToEntity(ProductDto dto) {
         return new Product()
                 .setId(dto.getId())

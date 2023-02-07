@@ -27,6 +27,10 @@ public class ProductToDishService {
         return repository.saveAll(entities);
     }
 
+    public void deleteAll() {
+        repository.deleteAll();
+    }
+
     public static ProductToDish mapToEntity(ProductToDishDto dto) {
         return new ProductToDish()
                 .setId(dto.getId())

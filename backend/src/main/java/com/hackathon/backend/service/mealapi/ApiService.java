@@ -59,8 +59,12 @@ public class ApiService {
     }
 
     public void warmDatabase() {
+        clearTables();
+        fillTables();
+    }
+
+    private void fillTables() {
         var meals = getAllMeals();
-        var productsToDishes = new ArrayList<ProductToDish>();
 
         var products = getAllProducts()
                 .stream()
@@ -74,12 +78,11 @@ public class ApiService {
                 .collect(Collectors.toList());
         dishService.saveAll(dishes);
 
-
+        var productsToDishes = new ArrayList<ProductToDish>();
         var dishesToDelete = new ArrayList<Dish>();
 
         for (int i = 0; i < meals.size(); ++i) {
             var productsToDish = getAllProductsForMeal(meals.get(i), dishes.get(i), products);
-
 
             if (!productsToDish.isEmpty()) {
                 productsToDishes.addAll(productsToDish);
@@ -91,6 +94,12 @@ public class ApiService {
 
         dishService.deleteAll(dishesToDelete);
         productToDishService.saveAll(productsToDishes);
+    }
+
+    private void clearTables() {
+        productToDishService.deleteAll();
+        productService.deleteAll();
+        dishService.deleteAll();
     }
 
     private List<ProductToDish> getAllProductsForMeal(MealApiDto mealApiDto, Dish dish,
@@ -149,7 +158,7 @@ public class ApiService {
     }
 
     private List<ProductDto> parseAllProductFiles() {
-        var allProducts = new ArrayList<ProductDto>(600);
+        var allProducts = new ArrayList<ProductDto>(1100);
 
         for (var category : productCategoryData.keySet()) {
             var path = productCategoryData.get(category);
