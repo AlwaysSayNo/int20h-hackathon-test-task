@@ -4,6 +4,8 @@ import com.hackathon.backend.dto.ProductToDishDto;
 import com.hackathon.backend.model.Dish;
 import com.hackathon.backend.model.ProductToDish;
 import com.hackathon.backend.repository.ProductToDishRepository;
+import com.hackathon.backend.service.dish.DishService;
+import com.hackathon.backend.service.product.ProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
