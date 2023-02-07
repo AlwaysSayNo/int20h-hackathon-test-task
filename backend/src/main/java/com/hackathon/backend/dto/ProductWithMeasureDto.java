@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProductWithMeasureDto {
 
-    private ProductDto productDto;
+    private ProductDto product;
 
     private String measure;
 

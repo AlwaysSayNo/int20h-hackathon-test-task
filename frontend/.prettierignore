@@ -1,0 +1,4 @@
+dist
+.terraform
+package-lock.json
+*.md
