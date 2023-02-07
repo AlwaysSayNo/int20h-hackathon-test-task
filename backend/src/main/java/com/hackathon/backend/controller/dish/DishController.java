@@ -2,9 +2,12 @@ package com.hackathon.backend.controller.dish;
 
 import com.hackathon.backend.dto.DishWithMeasuredProductsDto;
 import com.hackathon.backend.dto.DishWithProductsDto;
+import com.hackathon.backend.dto.dish.difficulty.GetDishDifficultyDto;
+import com.hackathon.backend.dto.dish.difficulty.PutDishDifficultyDto;
 import com.hackathon.backend.enumeration.DishSortBy;
 import com.hackathon.backend.enumeration.SortingOption;
 import com.hackathon.backend.model.Dish;
+import com.hackathon.backend.service.dish.DishDifficultyService;
 import com.hackathon.backend.service.dish.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +21,12 @@ import java.util.List;
 public class DishController {
 
     private final DishService dishService;
+    private final DishDifficultyService difficultyService;
 
     @Autowired
-    public DishController(DishService dishService) {
+    public DishController(DishService dishService, DishDifficultyService difficultyService) {
         this.dishService = dishService;
+        this.difficultyService = difficultyService;
     }
 
     @GetMapping
@@ -101,6 +106,30 @@ public class DishController {
                     page
             );
             return ResponseEntity.ok(customDishes);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/difficulty")
+    public ResponseEntity<?> setDifficulty(@RequestBody PutDishDifficultyDto dto) {
+        try {
+            var difficulty = difficultyService.setDifficulty(dto);
+            return ResponseEntity.ok(difficulty);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/difficulty")
+    public ResponseEntity<?> getDifficulty(@RequestBody GetDishDifficultyDto dto) {
+        try {
+            var difficulty = difficultyService.getDifficulty(dto);
+            return ResponseEntity.ok(difficulty);
         } catch (Exception e) {
             return ResponseEntity
                     .badRequest()

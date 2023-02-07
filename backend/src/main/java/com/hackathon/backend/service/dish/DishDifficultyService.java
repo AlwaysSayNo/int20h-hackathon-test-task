@@ -1,4 +1,4 @@
-package com.hackathon.backend.service;
+package com.hackathon.backend.service.dish;
 
 import com.hackathon.backend.dto.dish.difficulty.GetDishDifficultyDto;
 import com.hackathon.backend.dto.dish.difficulty.PutDishDifficultyDto;
@@ -7,6 +7,7 @@ import com.hackathon.backend.model.DishDifficulty;
 import com.hackathon.backend.repository.DishDifficultyRepository;
 import com.hackathon.backend.repository.DishRepository;
 import com.hackathon.backend.repository.UserRepository;
+import com.hackathon.backend.service.dish.DishService;
 import com.hackathon.backend.service.user.UserService;
 import org.springframework.stereotype.Service;
 
