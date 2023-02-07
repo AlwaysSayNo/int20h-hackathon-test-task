@@ -11,8 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class DishWithMeasuredProductsDto {
 
-    private DishDto dishDto;
+    private DishDto dish;
 
-    private List<ProductWithMeasureDto> productWithMeasureDtoList;
+    private List<ProductWithMeasureDto> productsWithMeasure;
 
 }

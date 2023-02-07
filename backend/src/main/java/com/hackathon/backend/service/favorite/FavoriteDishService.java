@@ -88,7 +88,7 @@ public class FavoriteDishService {
         var dishDtoList = favoriteDishes.getDishes().stream()
                 .map(DishService::mapToDto)
                 .toList();
-        viewDto.setDishList(dishDtoList);
+        viewDto.setDishes(dishDtoList);
         return viewDto;
     }
 }

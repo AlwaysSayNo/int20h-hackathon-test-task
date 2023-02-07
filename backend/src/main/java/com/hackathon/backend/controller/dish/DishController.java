@@ -69,8 +69,8 @@ public class DishController {
     public ResponseEntity<?> insertDish(@RequestBody DishWithMeasuredProductsDto dishWithMeasuredProductsDto) {
         try {
             Dish dish = dishService.insertDish(
-                    dishWithMeasuredProductsDto.getDishDto(),
-                    dishWithMeasuredProductsDto.getProductWithMeasureDtoList()
+                    dishWithMeasuredProductsDto.getDish(),
+                    dishWithMeasuredProductsDto.getProductsWithMeasure()
             );
             return ResponseEntity.ok(dish);
         } catch (Exception e) {

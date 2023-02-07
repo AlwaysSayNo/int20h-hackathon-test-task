@@ -46,13 +46,13 @@ public class DishService {
         this.userService = userService;
     }
 
-    public List<Dish> getAllDishes(String userLogin, Integer page) throws Exception {
+    public List<Dish> getAllDishes(String userLogin, Integer page) {
         Long userId = userService.getUser(userLogin).getId();
         Pageable pageable = PageRequest.of(page, Constants.ITEMS_PER_PAGE);
         return dishRepository.getDishes(pageable, userId);
     }
 
-    public DishWithProductsDto getDishInfo(String userLogin, Long id) throws Exception {
+    public DishWithProductsDto getDishInfo(String userLogin, Long id) {
         Long userId = userService.getUser(userLogin).getId();
         return dishRepository.getDishById(id, userId).map(dish -> {
             List<Product> products = productToDishService.getAllByDish(dish).stream()
@@ -62,7 +62,7 @@ public class DishService {
         }).orElseThrow(() -> new RuntimeException("Dish not found"));
     }
 
-    public List<Dish> getAvailableDishes(String userLogin) throws Exception {
+    public List<Dish> getAvailableDishes(String userLogin) {
         Long userId = userService.getUser(userLogin).getId();
         List<Long> userProductIds = productRepository.getUserProducts(userId).stream()
                 .map(Product::getId)
@@ -76,7 +76,7 @@ public class DishService {
         List<ProductToDish> productToDishes = productsWithMeasures.stream()
                 .map(productWithMeasure -> new ProductToDish()
                         .setDish(dish)
-                        .setProduct(ProductService.mapToEntity(productWithMeasure.getProductDto()))
+                        .setProduct(ProductService.mapToEntity(productWithMeasure.getProduct()))
                         .setMeasure(productWithMeasure.getMeasure()))
                 .toList();
         productToDishService.saveAll(productToDishes);
@@ -84,7 +84,7 @@ public class DishService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void deleteDish(String userLogin, Long dishId) throws Exception {
+    public void deleteDish(String userLogin, Long dishId) {
         User user = userService.getUser(userLogin);
         if(user.getCustomDishes().stream().map(Dish::getId).noneMatch(id -> Objects.equals(id, dishId))) {
             throw new RuntimeException("User's dishes not contain selected dish");
@@ -97,7 +97,7 @@ public class DishService {
             DishSortBy dishSortBy,
             String userLogin,
             Integer page
-    ) throws Exception {
+    ) {
         Long userId = userService.getUser(userLogin).getId();
         Sort sort = switch (sortingOption) {
             case ASCENDING -> Sort.by(dishSortBy.getSortBy()).ascending();
