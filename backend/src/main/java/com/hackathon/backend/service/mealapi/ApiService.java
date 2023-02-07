@@ -58,11 +58,17 @@ public class ApiService {
         this.productToDishService = productToDishService;
     }
 
+    /**
+     * Warms up the database by clearing existing data and filling the tables with new data from the remote meal API.
+     */
     public void warmDatabase() {
         clearTables();
         fillTables();
     }
 
+    /**
+     * Fills the database tables with data from the remote meal API.
+     */
     private void fillTables() {
         var meals = getAllMeals();
 
@@ -96,12 +102,23 @@ public class ApiService {
         productToDishService.saveAll(productsToDishes);
     }
 
+    /**
+     * Clears the data from the database tables.
+     */
     private void clearTables() {
         productToDishService.deleteAll();
         productService.deleteAll();
         dishService.deleteAll();
     }
 
+    /**
+     * Gets all products for a meal from the remote meal API.
+     *
+     * @param mealApiDto a MealApiDto instance
+     * @param dish a Dish instance
+     * @param products a list of products
+     * @return a list of ProductToDish instances
+     */
     private List<ProductToDish> getAllProductsForMeal(MealApiDto mealApiDto, Dish dish,
                                                         List<Product> products) {
         var result = new ArrayList<ProductToDish>();
@@ -128,6 +145,11 @@ public class ApiService {
         return result;
     }
 
+    /**
+     * Gets a list of all products available.
+     *
+     * @return List of ProductDto objects
+     */
     private List<ProductDto> getAllProducts() {
         var productsDto = parseAllProductFiles();
         setProductImagesIfExist(productsDto);
@@ -135,6 +157,12 @@ public class ApiService {
         return productsDto;
     }
 
+    /**
+     * Gets a list of all dishes from the list of MealApiDto objects.
+     *
+     * @param meals List of MealApiDto objects
+     * @return List of DishDto objects
+     */
     private List<DishDto> getAllDishes(List<MealApiDto> meals) {
         var dishes = new ArrayList<DishDto>(meals.size());
 
@@ -146,6 +174,11 @@ public class ApiService {
         return dishes;
     }
 
+    /**
+     * Gets a list of all meals from the remote meal API.
+     *
+     * @return List of MealApiDto objects
+     */
     private List<MealApiDto> getAllMeals() {
         var meals = new ArrayList<MealApiDto>(MEALS_PULLED_AMOUNT);
 
@@ -157,6 +190,11 @@ public class ApiService {
         return meals;
     }
 
+    /**
+     * Parses all product files and returns a list of ProductDto objects.
+     *
+     * @return List of ProductDto objects
+     */
     private List<ProductDto> parseAllProductFiles() {
         var allProducts = new ArrayList<ProductDto>(1100);
 
@@ -170,6 +208,11 @@ public class ApiService {
         return allProducts;
     }
 
+    /**
+     * Sets the product images if they exist in the remote meal API.
+     *
+     * @param productsDto List of ProductDto objects
+     */
     private void setProductImagesIfExist(List<ProductDto> productsDto) {
         ListIngredientApiDto ingredientsList = restTemplate.getForObject(
                 MealApi.GET_ALL_INGREDIENTS.getPath(), ListIngredientApiDto.class);
@@ -195,6 +238,13 @@ public class ApiService {
         log.info("Products amount with images: {}", counter);
     }
 
+    /**
+     * Parses a single product file and returns a list of ProductDto objects.
+     *
+     * @param category ProductCategory object
+     * @param path String path to the file
+     * @return List of ProductDto objects
+     */
     private List<ProductDto> parseProductFile(ProductCategory category, String path) {
         var is = getClass().getClassLoader().getResourceAsStream(path);
         if (is == null) throw new IllegalArgumentException("File '%s' is not found".formatted(path));
@@ -223,6 +273,12 @@ public class ApiService {
         return result;
     }
 
+    /**
+     * Gets a MealApiDto object by its id.
+     *
+     * @param index int id of the meal
+     * @return MealApiDto object
+     */
     private MealApiDto getMealApiDtoById(int index) {
         var path = MealApi.GET_DISH_BY_ID.getPath().formatted(index);
         var dishDto = restTemplate.getForObject(
@@ -232,6 +288,12 @@ public class ApiService {
         return dishDto.meals().get(0);
     }
 
+    /**
+     * Formats an ingredient name for comparison.
+     *
+     * @param name String name of the ingredient
+     * @return Formatted string
+     */
     private String formatIngredientNameForComparison(String name) {
         return name
                 .trim()
@@ -239,12 +301,24 @@ public class ApiService {
                 .replaceAll("-", " ");
     }
 
+    /**
+     * Formats an ingredient name for its image.
+     *
+     * @param name String name of the ingredient
+     * @return Formatted string
+     */
     private String formatIngredientNameForImage(String name) {
         return name
                 .trim()
                 .replaceAll(" ", "-");
     }
 
+    /**
+     * Maps a MealApiDto object to a DishDto object.
+     *
+     * @param mealApiDto object
+     * @return DishDto object
+     */
     private DishDto mapToDishDto(MealApiDto mealApiDto) {
         return new DishDto()
                 .setName(mealApiDto.strMeal())

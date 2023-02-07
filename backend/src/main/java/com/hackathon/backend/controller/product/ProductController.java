@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The `ProductController` class is a RESTful web service controller for handling product related operations.
+ * It maps all incoming requests under the "/hackathon/api/v1/product" URL.
+ */
 @RestController
 @RequestMapping("/hackathon/api/v1/product")
 public class ProductController {
@@ -26,6 +30,12 @@ public class ProductController {
         this.productService = productService;
     }
 
+    /**
+     * Handles HTTP GET requests for retrieving the products for the authenticated user.
+     *
+     * @param principal the authenticated user
+     * @return a `ResponseEntity` object containing the products for the authenticated user
+     */
     @GetMapping
     public ResponseEntity<?> getUserProducts(Principal principal) {
         try {
@@ -38,6 +48,11 @@ public class ProductController {
         }
     }
 
+    /**
+     * Handles HTTP GET requests for retrieving the products grouped by their categories.
+     *
+     * @return a `ResponseEntity` object containing a map of product categories to their respective products
+     */
     @GetMapping("/group-by-categories")
     public ResponseEntity<?> getProductsByCategories() {
         try {
@@ -50,6 +65,11 @@ public class ProductController {
         }
     }
 
+    /**
+     * Handles HTTP GET requests for retrieving the product categories.
+     *
+     * @return a `ResponseEntity` object containing the product categories
+     */
     @GetMapping("/categories")
     public ResponseEntity<?> getProductCategories() {
         try {
@@ -62,6 +82,13 @@ public class ProductController {
         }
     }
 
+    /**
+     * Handles HTTP GET requests for retrieving the products for a specific category and page.
+     *
+     * @param category the product category
+     * @param page the page number
+     * @return a `ResponseEntity` object containing the products for the specified category and page
+     */
     @GetMapping("/products-by-category")
     public ResponseEntity<?> getProductsByCategory(
             @RequestParam("category") String category,
