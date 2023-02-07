@@ -20,15 +20,13 @@ public class FavoriteDishService {
     private final UserService userService;
     private final FavoriteDishRepository favoriteDishRepository;
     private final DishRepository dishRepository;
-    private final DishService dishService;
 
     @Autowired
     public FavoriteDishService(UserService userService, FavoriteDishRepository favoriteDishRepository,
-                               DishRepository dishRepository, DishService dishService) {
+                               DishRepository dishRepository) {
         this.userService = userService;
         this.favoriteDishRepository = favoriteDishRepository;
         this.dishRepository = dishRepository;
-        this.dishService = dishService;
     }
 
     /**
@@ -37,10 +35,9 @@ public class FavoriteDishService {
      * @param userLogin the login of the user
      * @param dto the data transfer object representing the favorite dish collection
      * @return the updated data transfer object, including the generated id of the favorite dish collection
-     * @throws Exception if the user with the specified login cannot be found
      */
     @Transactional(rollbackFor = Exception.class)
-    public FavoriteDishDto createFavoriteDish(String userLogin, FavoriteDishDto dto) throws Exception {
+    public FavoriteDishDto createFavoriteDish(String userLogin, FavoriteDishDto dto) {
         var user = userService.getUser(userLogin);
         var favoriteDishes = dishRepository.findAllById(dto.getDishIds());
 
@@ -78,7 +75,7 @@ public class FavoriteDishService {
         return mapToViewDto(favoriteCollection);
     }
 
-    public List<LabelValue> getAllLabelValueFavoriteDishesForUser(String userLogin) throws Exception {
+    public List<LabelValue> getAllLabelValueFavoriteDishesForUser(String userLogin) {
         var user = userService.getUser(userLogin);
         return favoriteDishRepository.getAllLabelValueFavoriteDishForUser(user.getId());
     }

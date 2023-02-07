@@ -30,7 +30,7 @@ public class FavoriteProductService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public FavoriteProductDto createFavoriteProduct(String userLogin, FavoriteProductDto dto) throws Exception {
+    public FavoriteProductDto createFavoriteProduct(String userLogin, FavoriteProductDto dto) {
         var user = userService.getUser(userLogin);
         var favoriteProducts = productRepository.findAllById(dto.getProductIds());
 
@@ -48,7 +48,7 @@ public class FavoriteProductService {
     public FavoriteProductDto updateFavoriteProduct(Long id, FavoriteProductDto dto) {
         var favoriteCollection = favoriteProductRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Favorite product not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Favorite product not found"));
 
         var favoriteProducts = productRepository.findAllById(dto.getProductIds());
         favoriteCollection.setName(dto.getName());
@@ -64,11 +64,11 @@ public class FavoriteProductService {
     public FavoriteProductViewDto getFavoriteProduct(Long id) {
         var favoriteCollection = favoriteProductRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Favorite product not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Favorite product not found"));
         return mapToViewDto(favoriteCollection);
     }
 
-    public List<LabelValue> getAllLabelValueFavoriteProductsForUser(String userLogin) throws Exception {
+    public List<LabelValue> getAllLabelValueFavoriteProductsForUser(String userLogin) {
         var user = userService.getUser(userLogin);
         return favoriteProductRepository.getAllLabelValueFavoriteProductForUser(user.getId());
     }

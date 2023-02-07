@@ -114,9 +114,9 @@ public class DishController {
     }
 
     @PostMapping("/difficulty")
-    public ResponseEntity<?> setDifficulty(@RequestBody PutDishDifficultyDto dto) {
+    public ResponseEntity<?> setDifficulty(Principal principal, @RequestBody PutDishDifficultyDto dto) {
         try {
-            var difficulty = difficultyService.setDifficulty(dto);
+            var difficulty = difficultyService.setDifficultyForUser(principal.getName(), dto);
             return ResponseEntity.ok(difficulty);
         } catch (Exception e) {
             return ResponseEntity
@@ -126,9 +126,9 @@ public class DishController {
     }
 
     @GetMapping("/difficulty")
-    public ResponseEntity<?> getDifficulty(@RequestBody GetDishDifficultyDto dto) {
+    public ResponseEntity<?> getDifficulty(Principal principal, @RequestBody GetDishDifficultyDto dto) {
         try {
-            var difficulty = difficultyService.getDifficulty(dto);
+            var difficulty = difficultyService.getDifficultyForUser(principal.getName(), dto);
             return ResponseEntity.ok(difficulty);
         } catch (Exception e) {
             return ResponseEntity

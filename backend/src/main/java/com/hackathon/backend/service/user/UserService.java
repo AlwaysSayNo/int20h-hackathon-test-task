@@ -23,24 +23,24 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User getUser(String login) throws Exception {
+    public User getUser(String login) {
         return userRepository.findByLogin(login)
-                .orElseThrow(() -> new Exception(String.format("User with login %s doesn't exist", login)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("User with login %s doesn't exist", login)));
     }
 
     public boolean userExists(String login) {
         return userRepository.existsUserByLogin(login);
     }
 
-    public UserDto getUserDto(String login) throws Exception {
+    public UserDto getUserDto(String login) {
         return userRepository.findByLogin(login)
                 .map(this::mapToUserDto)
-                .orElseThrow(() -> new Exception(String.format("User with login %s doesn't exist", login)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format("User with login %s doesn't exist", login)));
     }
 
-    public UserDto registerUser(RegistrationDto registrationDto) throws Exception {
+    public UserDto registerUser(RegistrationDto registrationDto) {
         if (userExists(registrationDto.getLogin())) {
-            throw new Exception(String.format(
+            throw new IllegalArgumentException(String.format(
                     "User with login %s already exists", registrationDto.getLogin()));
         }
         User user = mapToUser(registrationDto);
