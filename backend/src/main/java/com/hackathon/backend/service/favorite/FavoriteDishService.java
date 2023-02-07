@@ -31,6 +31,14 @@ public class FavoriteDishService {
         this.dishService = dishService;
     }
 
+    /**
+     * Create a favorite dish collection for a user.
+     *
+     * @param userLogin the login of the user
+     * @param dto the data transfer object representing the favorite dish collection
+     * @return the updated data transfer object, including the generated id of the favorite dish collection
+     * @throws Exception if the user with the specified login cannot be found
+     */
     @Transactional(rollbackFor = Exception.class)
     public FavoriteDishDto createFavoriteDish(String userLogin, FavoriteDishDto dto) throws Exception {
         var user = userService.getUser(userLogin);

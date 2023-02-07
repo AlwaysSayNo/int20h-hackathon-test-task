@@ -38,7 +38,7 @@ public class FavoriteProducts {
     private User user;
 
     @ManyToMany(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = CascadeType.MERGE
     )
     @JoinTable(name = "favorite_products_to_products",
